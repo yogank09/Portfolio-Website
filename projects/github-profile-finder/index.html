@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="A React app that searches GitHub profiles using the GitHub API.">
+  <title>GitHub Profile Finder | Yogank Sharma</title>
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+  <style>
+    :root { color-scheme: dark; --bg: #101526; --card: #1b2340; --text: #f8f8ff; --muted: #b8bed2; --accent: #ffd166; --line: rgba(255,255,255,.12); }
+    * { box-sizing: border-box; }
+    body { margin: 0; min-height: 100vh; font-family: Arial, sans-serif; color: var(--text); background: radial-gradient(circle at 15% 5%, #29375f 0, transparent 38%), var(--bg); }
+    main { width: min(940px, calc(100% - 32px)); margin: 0 auto; padding: 56px 0 72px; }
+    a { color: var(--accent); }
+    .back { display: inline-block; margin-bottom: 32px; font-weight: 700; text-decoration: none; }
+    h1 { margin: 0; font-size: clamp(2rem, 6vw, 3.5rem); }
+    .intro { max-width: 680px; color: var(--muted); line-height: 1.65; }
+    form { display: flex; gap: 10px; margin: 28px 0; }
+    input, button { border-radius: 10px; padding: 13px 15px; font: inherit; }
+    input { flex: 1; border: 1px solid var(--line); color: var(--text); background: #11182d; }
+    button { border: 0; color: #211900; background: var(--accent); cursor: pointer; font-weight: 700; }
+    .hint, .status { color: var(--muted); }
+    .error { color: #ffb4b4; }
+    .profile { display: grid; grid-template-columns: 150px 1fr; gap: 28px; margin-top: 32px; padding: 28px; border: 1px solid var(--line); border-radius: 18px; background: var(--card); }
+    .avatar { width: 150px; border-radius: 50%; }
+    h2 { margin: 0; }.bio { color: var(--muted); line-height: 1.6; }
+    .stats { display: flex; flex-wrap: wrap; gap: 10px; padding: 0; list-style: none; }.stats li { padding: 9px 11px; border: 1px solid var(--line); border-radius: 8px; }
+    .repos { margin-top: 22px; }.repos ul { display: grid; gap: 10px; padding: 0; list-style: none; }.repos li { padding: 14px; border: 1px solid var(--line); border-radius: 10px; }.repos p { margin: 7px 0 0; color: var(--muted); font-size: .92rem; }
+    @media (max-width: 600px) { main { padding-top: 32px; }.profile { grid-template-columns: 1fr; }.avatar { width: 110px; } form { flex-direction: column; } }
+  </style>
+</head>
+<body>
+  <main id="root"></main>
+  <script>
+    const { useState } = React;
+    function App() {
+      const [query, setQuery] = useState('yogank09');
+      const [profile, setProfile] = useState(null);
+      const [repos, setRepos] = useState([]);
+      const [status, setStatus] = useState('Search any public GitHub username to see the API integration in action.');
+      const [loading, setLoading] = useState(false);
+      async function search(event) {
+        event.preventDefault();
+        const username = query.trim();
+        if (!username) return;
+        setLoading(true); setProfile(null); setRepos([]); setStatus('Loading profile from the GitHub API…');
+        try {
+          const [profileResponse, reposResponse] = await Promise.all([
+            fetch(`https://api.github.com/users/${encodeURIComponent(username)}`),
+            fetch(`https://api.github.com/users/${encodeURIComponent(username)}/repos?sort=updated&per_page=5`)
+          ]);
+          if (!profileResponse.ok) throw new Error(profileResponse.status === 404 ? 'No GitHub user was found with that username.' : 'GitHub could not load this profile right now.');
+          const data = await profileResponse.json();
+          setProfile(data); setRepos(reposResponse.ok ? await reposResponse.json() : []); setStatus('');
+        } catch (error) { setStatus(error.message); }
+        finally { setLoading(false); }
+      }
+      return React.createElement(React.Fragment, null,
+        React.createElement('a', { className: 'back', href: '../../index.html' }, '← Back to portfolio'),
+        React.createElement('h1', null, 'GitHub Profile Finder'),
+        React.createElement('p', { className: 'intro' }, 'A React mini project using the public GitHub REST API. It demonstrates async requests, response handling, loading and error states, and rendering API data in reusable UI sections.'),
+        React.createElement('form', { onSubmit: search }, React.createElement('input', { value: query, onChange: e => setQuery(e.target.value), placeholder: 'Enter a GitHub username', 'aria-label': 'GitHub username' }), React.createElement('button', { type: 'submit', disabled: loading }, loading ? 'Searching…' : 'Search profile')),
+        status && React.createElement('p', { className: status.includes('No GitHub') || status.includes('could not') ? 'status error' : 'status' }, status),
+        profile && React.createElement('section', { className: 'profile' },
+          React.createElement('img', { className: 'avatar', src: profile.avatar_url, alt: `${profile.login}'s avatar` }),
+          React.createElement('div', null, React.createElement('h2', null, profile.name || profile.login), React.createElement('p', { className: 'bio' }, profile.bio || 'No bio provided.'), React.createElement('a', { href: profile.html_url, target: '_blank', rel: 'noreferrer' }, `@${profile.login} on GitHub`), React.createElement('ul', { className: 'stats' }, React.createElement('li', null, `${profile.public_repos} repos`), React.createElement('li', null, `${profile.followers} followers`), React.createElement('li', null, `${profile.following} following`)),
+            repos.length > 0 && React.createElement('div', { className: 'repos' }, React.createElement('h3', null, 'Recently updated repositories'), React.createElement('ul', null, repos.map(repo => React.createElement('li', { key: repo.id }, React.createElement('a', { href: repo.html_url, target: '_blank', rel: 'noreferrer' }, repo.name), React.createElement('p', null, repo.description || 'No description provided.'))))))
+        )
+      );
+    }
+    ReactDOM.createRoot(document.getElementById('root')).render(React.createElement(App));
+  </script>
+</body>
+</html>
