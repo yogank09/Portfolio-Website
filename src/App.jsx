@@ -1,27 +1,480 @@
-import { useEffect, useState } from 'react';
-import { links, skills, projects, certifications } from './data/portfolio';
-
-const Icon = ({ name, size = 18 }) => { const p = { width: size, height: size, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 1.8, strokeLinecap: 'round', strokeLinejoin: 'round', 'aria-hidden': true }; const paths = { github: <><path d="M15 22v-3.9c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6.1a4.8 4.8 0 0 0-1.3-3.3A4.5 4.5 0 0 0 18.6 3S17.5 2.7 15 4.4a12.8 12.8 0 0 0-6 0C6.5 2.7 5.4 3 5.4 3a4.5 4.5 0 0 0-.1 3.7A4.8 4.8 0 0 0 4 10c0 4.7 2.7 5.8 5.5 6.1-.6.6-.6 1.3-.5 2V22" /><path d="M9 19c-3 .9-3-1.5-4.2-1.9" /></>, linkedin: <><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6Z" /><rect x="2" y="9" width="4" height="12" /><path d="M4 6a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z" /></>, menu: <><path d="M4 6h16M4 12h16M4 18h16" /></>, close: <><path d="m6 6 12 12M18 6 6 18" /></>, arrow: <><path d="M5 12h14M13 6l6 6-6 6" /></>, sun: <><circle cx="12" cy="12" r="4" /><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" /></>, moon: <><path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8Z" /></>, mail: <><rect x="3" y="5" width="18" height="14" rx="2" /><path d="m3 7 9 6 9-6" /></>, code: <><path d="m8 9-3 3 3 3M16 9l3 3-3 3M14 5l-4 14" /></> }; return <svg {...p}>{paths[name]}</svg> };
-const External = ({ href, children, className = '' }) => <a className={className} href={href} target="_blank" rel="noreferrer">{children}</a>;
-const Section = ({ id, kicker, title, children, className = '' }) => <section id={id} className={'section reveal ' + className}><div className="section-heading"><span>{kicker}</span><h2>{title}</h2></div>{children}</section>;
-
-function Navbar({ theme, setTheme }) { const [open, setOpen] = useState(false);
-
-    const nav = ['Home', 'About', 'Skills', 'Experience', 'Projects', 'Education', 'Contact'];
-    return <header className="nav-wrap"><nav className="nav container"><a className="wordmark" href="#home">YOGANK<span> SHARMA</span></a>
-    <div className={'nav-links ' + (open ? 'open' : '')}>{nav.map(n => <a onClick={() => setOpen(false)} href={'#' + n.toLowerCase()} key={n}>{n}</a>)}<External href={links.github} className="nav-social"><Icon name="github" /></External>
-    <External href={links.linkedin} className="nav-social"><Icon name="linkedin" /></External><a className="resume mini" href="#contact" onClick={() => setOpen(false)}>View Resume</a></div><div className="nav-actions">
-        <button className="icon-btn" aria-label="Toggle color theme" onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}><Icon name={theme === 'dark' ? 'sun' : 'moon'} /></button><button className="menu-btn" aria-label="Toggle navigation menu" aria-expanded={open} onClick={() => setOpen(!open)}><Icon name={open ? 'close' : 'menu'} /></button></div></nav></header> }
-function Hero() { return <section id="home" className="hero container"><div className="hero-copy"><p className="eyebrow">Available for graduate opportunities</p><h1>Hi, I’m <em>Yogank Sharma.</em></h1><h2>Aspiring Software Developer</h2><p className="hero-stack">Java <i /> Spring Boot <i /> SQL <i /> DSA <i /> React.js</p><p className="hero-text">B.Tech CSE student and aspiring Software Developer with hands-on experience in Java, Spring Boot, React.js, REST APIs, SQL, and web application development.</p><div className="hero-actions"><a className="button primary" href="#projects">View Projects</a><a className="button secondary" href="#contact">Download Resume</a><a className="text-link" href="#contact">View contact</a></div></div><div className="hero-visual" aria-label="Developer workspace visual"><div className="code-window"><div className="window-bar"><span /><span /><span /><b>developer.java</b></div><div className="code-body"><p><b>01</b> <strong>public class</strong> <span>Developer</span> {'{'}</p><p><b>02</b> &nbsp;<strong>String</strong> focus = <span>"software"</span>;</p><p><b>03</b> &nbsp;<strong>String[]</strong> stack = {'{'}</p><p><b>04</b> &nbsp;&nbsp;<span>"Java", "Spring Boot",</span></p><p><b>05</b> &nbsp;&nbsp;<span>"React.js", "SQL"</span>{'}'};</p><p><b>06</b> {'}'}</p></div></div><div className="problem-badge"><span className="badge-icon"><Icon name="code" /></span><strong>130+</strong><small>LeetCode problems solved</small></div></div></section> }
-function About() { return <Section id="about" kicker="01 / ABOUT" title="Grounded in fundamentals. Focused on useful software."><div className="about-grid"><p className="lead">Aspiring Software Developer and B.Tech CSE student with hands-on experience building web applications using Java, JavaScript, React.js, and Spring Boot. Familiar with REST APIs, MySQL, and Data Structures and Algorithms.<br /><br />I recently completed a Full Stack Developer internship at TalentXMind, gaining practical exposure to Java and Spring Boot. I enjoy turning programming fundamentals into reliable, practical solutions.</p><div className="fact-grid">{[['Education', 'B.Tech CSE'], ['Experience', 'Full Stack Developer Intern'], ['Primary focus', 'Software Development'], ['Problem solving', '130+ LeetCode Problems']].map(([a, b]) => <div className="fact" key={a}><small>{a}</small><strong>{b}</strong></div>)}</div></div></Section> }
-function Skills() { return <Section id="skills" kicker="02 / SKILLS" title="A practical development toolkit."><div className="skills-grid">{skills.map(([group, items]) => <article className="skill-card" key={group}><h3>{group}</h3><div>{items.map(x => <span className="tag" key={x}>{x}</span>)}</div></article>)}</div></Section> }
-function Experience() { return <Section id="experience" kicker="03 / EXPERIENCE" title="Learning in a real development environment."><article className="experience-card"><div className="timeline-dot" /><div className="experience-top"><div><p className="role">Full Stack Developer Intern</p><h3>TalentXMind <span>· Remote</span></h3></div><time>June 2026 – August 2026</time></div><ul><li>Completed hands-on training and practical assignments in Java and Spring Boot as part of a Full Stack Developer internship.</li><li>Contributed to backend development tasks, applying core OOP and DBMS concepts to REST API design and implementation.</li></ul></article></Section> }
-function ProjectCard({ project, onOpen }) { return <article className="project-card"><div className="project-top"><span className="project-type">{project.category}</span><span className="project-number">0{projects.indexOf(project) + 1}</span></div><h3>{project.title}</h3><p className="project-subtitle">{project.subtitle}</p><p>{project.description}</p><div className="tag-list">{project.technologies.map(t => <span className="tag" key={t}>{t}</span>)}</div><button className="project-open" onClick={() => onOpen(project)}>View details</button></article> }
-function ProjectModal({ project, onClose }) { if (!project) return null; return <div className="modal-backdrop" role="presentation" onMouseDown={onClose}><section className="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" onMouseDown={e => e.stopPropagation()}><button className="modal-close" aria-label="Close project details" onClick={onClose}><Icon name="close" /></button><span className="project-type">{project.category}</span><h2 id="modal-title">{project.title}</h2><p className="project-subtitle">{project.subtitle}</p><div className="detail-grid"><div><h4>Project overview</h4><p>{project.description}</p><h4>My contribution</h4><p>{project.contribution}</p></div><div><h4>Technologies</h4><div className="tag-list">{project.technologies.map(t => <span className="tag" key={t}>{t}</span>)}</div><h4>Features</h4><ul>{project.features.map(f => <li key={f}>{f}</li>)}</ul></div></div><div className="modal-actions">{project.github && <External href={project.github} className="button secondary">View on GitHub</External>}{project.live && <External href={project.live} className="button primary">View live demo</External>}</div></section></div> }
-function Projects() { const [filter, setFilter] = useState('All'), [selected, setSelected] = useState(null); const filtered = filter === 'All' ? projects : projects.filter(p => p.category === filter); useEffect(() => { const close = e => e.key === 'Escape' && setSelected(null); addEventListener('keydown', close); return () => removeEventListener('keydown', close) }, []); return <Section id="projects" kicker="04 / PROJECTS" title="Selected work, built hands-on."><div className="filters">{['All', 'Java / Backend', 'Full Stack', 'Frontend'].map(x => <button className={filter === x ? 'active' : ''} onClick={() => setFilter(x)} key={x}>{x}</button>)}</div><div className="projects-grid">{filtered.map(p => <ProjectCard key={p.id} project={p} onOpen={setSelected} />)}</div><ProjectModal project={selected} onClose={() => setSelected(null)} /></Section> }
-function Education() { const entries = [['2023–2027', 'B.Tech in Computer Science & Engineering', 'IIMT College of Engineering, Greater Noida', 'CGPA: 7.67/10'], ['2022', 'Class XII', 'L.P.S.V.M. Inter College, Bamhanpur, Lakhimpur Kheri · UP Board', '71%'], ['2020', 'Class X', 'Mewalal Ramdulari Saraswati Vidya Mandir Inter College, Majhgain, Lakhimpur Kheri · UP Board', '79%']]; return <Section id="education" kicker="05 / EDUCATION" title="Academic foundation."><div className="education-list">{entries.map(([year, title, school, grade]) => <article className="education-item" key={year}><time>{year}</time><div><h3>{title}</h3><p>{school}</p></div><strong>{grade}</strong></article>)}</div></Section> }
-function Certifications() { return <Section id="certifications" kicker="06 / CERTIFICATIONS" title="Continued learning."><div className="cert-grid">{certifications.map(c => <External className="cert-card" href={c.file} key={c.name}><span className="cert-mark">View certificate</span><h3>{c.name}</h3><p>{c.organization}</p><small>Completed {c.date}</small></External>)}</div></Section> }
-function CodingProfiles() { const items = [['LeetCode', '130+ Problems Solved', links.leetcode], ['GitHub', 'View Projects', links.github], ['GeeksforGeeks', 'View Profile', links.gfg], ['LinkedIn', 'Connect With Me', links.linkedin]]; return <Section id="profiles" kicker="07 / CODING PROFILES" title="Find me where I learn and build."><div className="profiles-grid">{items.map(([name, text, href]) => <External href={href} className="profile-card" key={name}><span>{name.slice(0, 2).toUpperCase()}</span><div><h3>{name}</h3><p>{text}</p></div><b className="view-label">View</b></External>)}</div></Section> }
-function Contact() { const submit = e => { e.preventDefault(); const f = new FormData(e.currentTarget), subject = encodeURIComponent(`Portfolio enquiry from ${f.get('name')}`), body = encodeURIComponent(`Name: ${f.get('name')}\nEmail: ${f.get('email')}\n\n${f.get('message')}`); window.location.href = `mailto:yogank2005@gmail.com?subject=${subject}&body=${body}` }; return <Section id="contact" kicker="08 / CONTACT" title="Let’s build something together."><div className="contact-grid"><div><p className="lead">I’m open to opportunities where I can contribute, learn, and grow as a Software Developer.</p><div className="contact-links"><a href={links.email}><Icon name="mail" /> yogank2005@gmail.com</a><a href={links.phone}>+91 9565387743</a><External href={links.linkedin}>View LinkedIn</External><External href={links.github}>View GitHub</External></div><p className="resume-note">Resume available on request — please email me for the latest copy.</p></div><form onSubmit={submit}><label>Name<input required name="name" autoComplete="name" /></label><label>Email<input required type="email" name="email" autoComplete="email" /></label><label>Message<textarea required name="message" rows="4" /></label><button className="button primary" type="submit">Send Message</button><small>This opens your email app with your message prepared.</small></form></div></Section> }
-function Footer() { return <footer><div className="container"><a className="wordmark" href="#home">YOGANK<span> SHARMA</span></a><p>© {new Date().getFullYear()} Yogank Sharma. Built with care.</p><div><External href={links.github}>GitHub</External><External href={links.linkedin}>LinkedIn</External></div></div></footer> }
-export default function App() { const [theme, setTheme] = useState(localStorage.getItem('theme') || 'dark'); useEffect(() => { document.documentElement.dataset.theme = theme; localStorage.setItem('theme', theme) }, [theme]); useEffect(() => { const observer = new IntersectionObserver(items => items.forEach(i => i.isIntersecting && i.target.classList.add('visible')), { threshold: .1 }); document.querySelectorAll('.reveal').forEach(x => observer.observe(x)); return () => observer.disconnect() }, []); return <><Navbar theme={theme} setTheme={setTheme} /><main><Hero /><About /><Skills /><Experience /><Projects /><Education /><Certifications /><CodingProfiles /><Contact /></main><Footer /></> }
+import { useEffect, useState } from "react";
+import pic from "./assets/yogank-sharma-headshot.png";
+import { links, skills, projects, certifications } from "./data/portfolio";
+const X = ({ href, children }) => (
+  <a href={href} target="_blank" rel="noreferrer">
+    {children} ↗
+  </a>
+);
+const Section = ({ id, kicker, title, children }) => (
+  <section id={id}>
+    <p className="kicker">{kicker}</p>
+    <h2>{title}</h2>
+    {children}
+  </section>
+);
+function Nav({ theme, setTheme }) {
+  const [n, setN] = useState(false);
+  return (
+    <header>
+      <nav>
+        <a className="brand" href="#home">
+          YOGANK <b>SHARMA</b>
+        </a>
+        <div className={n ? "nav open" : "nav"}>
+          {[
+            "Home",
+            "About",
+            "Skills",
+            "Experience",
+            "Projects",
+            "Education",
+            "Certifications",
+            "Contact",
+          ].map((x) => (
+            <a onClick={() => setN(false)} href={"#" + x.toLowerCase()} key={x}>
+              {x}
+            </a>
+          ))}
+        </div>
+        <button
+          onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+          aria-label="Change theme"
+        >
+          {theme === "dark" ? "☀" : "◐"}
+        </button>
+        <button
+          className="hamburger"
+          onClick={() => setN(!n)}
+          aria-label="Open menu"
+        >
+          ☰
+        </button>
+      </nav>
+    </header>
+  );
+}
+function Hero() {
+  return (
+    <section id="home" className="hero">
+      <div>
+        <p className="available">
+          ● Open to Software Development Opportunities
+        </p>
+        <p className="kicker">PORTFOLIO / 2026</p>
+        <h1>
+          Aspiring <em>Software Developer.</em>
+        </h1>
+        <p className="intro">
+          B.Tech CSE student building reliable web applications with Java,
+          Spring Boot, React.js, REST APIs and SQL.
+        </p>
+        <p>
+          <a className="button" href="#projects">
+            View Projects ↓
+          </a>
+          <a className="button ghost" href="#contact">
+            Resume options
+          </a>
+        </p>
+        <div className="social">
+          <X href={links.github}>GitHub</X>
+          <X href={links.linkedin}>LinkedIn</X>
+          <X href={links.leetcode}>LeetCode</X>
+        </div>
+      </div>
+      <div className="photo">
+        <img src={pic} alt="Yogank Sharma" />
+          <span>
+            LeetCode
+            <br />
+            130+ problems solved
+          </span>
+      </div>
+    </section>
+  );
+}
+function About() {
+  return (
+    <Section
+      id="about"
+      kicker="01 / ABOUT"
+      title="Grounded in fundamentals. Focused on useful software."
+    >
+      <div className="two">
+        <p className="intro">
+          I’m Yogank Sharma, a Computer Science student focused on turning
+          programming fundamentals into useful web applications. I enjoy backend
+          APIs, responsive interfaces and problem-solving.
+        </p>
+        <div className="facts">
+          {[
+            ["Education", "B.Tech CSE · 2023–2027"],
+            ["Direction", "Software development"],
+            ["Focus", "Web applications & APIs"],
+            ["Problem solving", "130+ LeetCode problems"],
+          ].map((x) => (
+            <article>
+              <small>{x[0]}</small>
+              <b>{x[1]}</b>
+            </article>
+          ))}
+        </div>
+      </div>
+    </Section>
+  );
+}
+function Skills() {
+  const [s, setS] = useState("All"),
+    groups = [
+      ...skills,
+      [
+        "CS Fundamentals",
+        ["OOP", "DBMS", "Data Structures & Algorithms", "Operating Systems"],
+      ],
+    ];
+  let g = s === "All" ? groups : groups.filter((x) => x[0] === s);
+  return (
+    <Section
+      id="skills"
+      kicker="02 / SKILLS"
+      title="A practical development toolkit."
+    >
+      <div className="filters">
+        {["All", ...groups.map((x) => x[0])].map((x) => (
+          <button className={s === x ? "on" : ""} onClick={() => setS(x)}>
+            {x}
+          </button>
+        ))}
+      </div>
+      <div className="skillgrid">
+        {g.map(([n, v]) => (
+          <article>
+            <h3>{n}</h3>
+            {v.map((t) => (
+              <span>{t}</span>
+            ))}
+          </article>
+        ))}
+      </div>
+    </Section>
+  );
+}
+function Experience() {
+  return (
+    <Section
+      id="experience"
+      kicker="03 / EXPERIENCE"
+      title="Learning in a real development environment."
+    >
+      <article className="timeline">
+        <p className="kicker">FULL STACK DEVELOPER INTERN</p>
+        <h3>
+          TalentXMind <small>· Remote</small>
+        </h3>
+        <time>June 2026 – August 2026</time>
+        <ul>
+          <li>
+            Completed hands-on training and practical assignments in Java and
+            Spring Boot.
+          </li>
+          <li>
+            Applied OOP and DBMS concepts to REST API design and backend tasks.
+          </li>
+        </ul>
+        <span>Java</span>
+        <span>Spring Boot</span>
+        <span>REST APIs</span>
+      </article>
+    </Section>
+  );
+}
+function Projects() {
+  const [f, setF] = useState("All"),
+    [modal, setModal] = useState(null),
+    fs = ["All", "Frontend", "Backend", "Full Stack", "Java", "React"];
+  let list = projects.filter(
+    (p) =>
+      f === "All" ||
+      (f === "Backend" && p.category === "Java / Backend") ||
+      p.category === f ||
+      p.technologies.some((t) => t.includes(f)),
+  );
+  return (
+    <Section
+      id="projects"
+      kicker="04 / PROJECTS"
+      title="Selected work, built hands-on."
+    >
+      <div className="filters">
+        {fs.map((x) => (
+          <button className={f === x ? "on" : ""} onClick={() => setF(x)}>
+            {x}
+          </button>
+        ))}
+      </div>
+      <div className="projectgrid">
+        {list.map((p, i) => (
+          <article className="project">
+            <div className={"preview p" + i}>
+              <b>0{i + 1}</b>
+              <small>{p.category}</small>
+            </div>
+            <h3>{p.title}</h3>
+            <p className="accent">{p.subtitle}</p>
+            <p>{p.description}</p>
+            {p.technologies.map((t) => (
+              <span>{t}</span>
+            ))}
+            <p>
+              <button onClick={() => setModal(p)}>View details →</button>
+              {p.github && <X href={p.github}>GitHub</X>}
+              {p.live && <X href={p.live}>Live demo</X>}
+            </p>
+          </article>
+        ))}
+      </div>
+      {modal && (
+        <div className="backdrop" onMouseDown={() => setModal(null)}>
+          <article
+            className="modal"
+            role="dialog"
+            aria-modal="true"
+            onMouseDown={(e) => e.stopPropagation()}
+          >
+            <button onClick={() => setModal(null)}>×</button>
+            <p className="kicker">{modal.category}</p>
+            <h2>{modal.title}</h2>
+            <p>{modal.description}</p>
+            <h3>Features</h3>
+            <ul>
+              {modal.features.map((x) => (
+                <li>{x}</li>
+              ))}
+            </ul>
+            <h3>Technologies</h3>
+            {modal.technologies.map((x) => (
+              <span>{x}</span>
+            ))}
+            <p>
+              {modal.github && <X href={modal.github}>GitHub</X>}
+              {modal.live && <X href={modal.live}>Live demo</X>}
+            </p>
+          </article>
+        </div>
+      )}
+    </Section>
+  );
+}
+function Education() {
+  let e = [
+    [
+      "2023–2027",
+      "B.Tech Computer Science & Engineering",
+      "IIMT College of Engineering, Greater Noida",
+      "CGPA: 7.67/10",
+    ],
+    [
+      "2022",
+      "Class XII",
+      "L.P.S.V.M. Inter College, Bamhanpur, Lakhimpur Kheri · UP Board",
+      "71%",
+    ],
+    [
+      "2020",
+      "Class X",
+      "Mewalal Ramdulari Saraswati Vidya Mandir Inter College, Majhgain, Lakhimpur Kheri · UP Board",
+      "79%",
+    ],
+  ];
+  return (
+    <Section
+      id="education"
+      kicker="05 / EDUCATION"
+      title="Academic foundation."
+    >
+      <div className="education">
+        {e.map((x) => (
+          <article>
+            <time>{x[0]}</time>
+            <div>
+              <h3>{x[1]}</h3>
+              <p>{x[2]}</p>
+            </div>
+            <b>{x[3]}</b>
+          </article>
+        ))}
+      </div>
+    </Section>
+  );
+}
+function Certs() {
+  return (
+    <Section
+      id="certifications"
+      kicker="06 / CERTIFICATIONS"
+      title="Continued learning."
+    >
+      <div className="certs">
+        {certifications.map((c) => (
+          <X href={c.file}>
+            <p>{c.organization}</p>
+            <h3>{c.name}</h3>
+            <small>Completed {c.date}</small>
+          </X>
+        ))}
+      </div>
+    </Section>
+  );
+}
+function Contact() {
+  const [c, setC] = useState(false),
+    submit = (e) => {
+      e.preventDefault();
+      let f = new FormData(e.currentTarget);
+      location.href = `mailto:yogank2005@gmail.com?subject=${encodeURIComponent(f.get("subject"))}&body=${encodeURIComponent(f.get("message"))}`;
+    };
+  return (
+    <Section
+      id="contact"
+      kicker="07 / CONTACT"
+      title="Let’s build something together."
+    >
+      <div className="two">
+        <div className="intro">
+          <p>
+            Open to opportunities where I can contribute, learn and grow as a
+            Software Developer.
+          </p>
+          <p>
+            <X href={links.email}>yogank2005@gmail.com</X>{" "}
+            <button
+              onClick={() => {
+                navigator.clipboard.writeText("yogank2005@gmail.com");
+                setC(true);
+              }}
+            >
+              {c ? "Copied!" : "Copy email"}
+            </button>
+          </p>
+          <p>
+            <a href={links.phone}>+91 9565387743</a>
+          </p>
+          <X href={links.linkedin}>LinkedIn</X> ·{" "}
+          <X href={links.github}>GitHub</X>
+          <p>
+            <small>
+              Resume available on request—email for the latest copy.
+            </small>
+          </p>
+        </div>
+        <form onSubmit={submit}>
+          <label>
+            Name
+            <input required name="name" />
+          </label>
+          <label>
+            Email
+            <input required type="email" name="email" />
+          </label>
+          <label>
+            Subject
+            <input required name="subject" />
+          </label>
+          <label>
+            Message
+            <textarea required name="message" rows="4" />
+          </label>
+          <button className="button">Send via email →</button>
+          <small>
+            Opens your email app; no messages are sent automatically.
+          </small>
+        </form>
+      </div>
+    </Section>
+  );
+}
+function Palette({ show, setShow }) {
+  if (!show) return null;
+  let cmds = [
+    "Home",
+    "About",
+    "Skills",
+    "Experience",
+    "Projects",
+    "Education",
+    "Certifications",
+    "Contact",
+  ];
+  return (
+    <div className="backdrop" onClick={() => setShow(false)}>
+      <div className="palette" onClick={(e) => e.stopPropagation()}>
+        <input autoFocus placeholder="Search commands…" />
+        {cmds.map((x) => (
+          <button
+            onClick={() => {
+              document
+                .querySelector("#" + x.toLowerCase())
+                .scrollIntoView({ behavior: "smooth" });
+              setShow(false);
+            }}
+          >
+            Go to {x}
+            <b>↵</b>
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
+export default function App() {
+  const [theme, setTheme] = useState(localStorage.theme || "dark"),
+    [show, setShow] = useState(false),
+    [top, setTop] = useState(false);
+  useEffect(() => {
+    document.documentElement.dataset.theme = theme;
+    localStorage.theme = theme;
+  }, [theme]);
+  useEffect(() => {
+    let k = (e) => {
+        if ((e.ctrlKey || e.metaKey) && e.key === "k") {
+          e.preventDefault();
+          setShow(true);
+        }
+        if (e.key === "Escape") setShow(false);
+      },
+      s = () => setTop(scrollY > 500);
+    addEventListener("keydown", k);
+    addEventListener("scroll", s);
+    return () => {
+      removeEventListener("keydown", k);
+      removeEventListener("scroll", s);
+    };
+  }, []);
+  return (
+    <>
+      <Nav theme={theme} setTheme={setTheme} />
+      <main>
+        <Hero />
+        <About />
+        <Skills />
+        <Experience />
+        <Projects />
+        <Education />
+        <Certs />
+        <Contact />
+      </main>
+      <button
+        className={"top " + (top ? "show" : "")}
+        onClick={() => scrollTo({ top: 0, behavior: "smooth" })}
+      >
+        ↑
+      </button>
+      <Palette show={show} setShow={setShow} />
+      <footer>
+        © {new Date().getFullYear()} Yogank Sharma ·{" "}
+        <X href={links.github}>GitHub</X>
+      </footer>
+    </>
+  );
+}
